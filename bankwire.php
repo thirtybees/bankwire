@@ -46,7 +46,7 @@ class BankWire extends PaymentModule
     {
         $this->name = 'bankwire';
         $this->tab = 'payments_gateways';
-        $this->version = '2.0.0';
+        $this->version = '2.0.1';
         $this->author = 'thirty bees';
         $this->controllers = ['payment', 'validation'];
         $this->is_eu_compatible = 1;
@@ -96,11 +96,9 @@ class BankWire extends PaymentModule
             return false;
         }
 
-        $this->registerHook([
-            'displayPayment',
-            'displayPaymentEU',
-            'paymentReturn',
-        ]);
+        $this->registerHook('displayPayment');
+        $this->registerHook('displayPaymentEU');
+        $this->registerHook('paymentReturn');
 
         return true;
     }
