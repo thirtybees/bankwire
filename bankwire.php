@@ -265,7 +265,7 @@ class BankWire extends PaymentModule
      */
     public function hookPaymentReturn($params)
     {
-        if (!isset($params) || !isset($params['objOrder']) || !$params['objOrder'] instanceof Order || $this->active) {
+        if (!isset($params) || !isset($params['objOrder']) || !$params['objOrder'] instanceof Order || !$this->active) {
             return '';
         }
 
