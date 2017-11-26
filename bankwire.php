@@ -303,6 +303,16 @@ class BankWire extends PaymentModule
         }
         $this->moduleHtml .= $this->displayConfirmation($this->l('Settings updated'));
     }
+    
+    public function validateOrder($idCart, $idOrderState, $amountPaid, $paymentMethod = 'Unknown', $message = null, $extraVars = [], $currencySpecial = null, $dontTouchAmount = false, $secureKey = false,  Shop $shop = null)
+    {
+        $mailVars = [
+            '{bankwire_owner}'   => Configuration::get('BANK_WIRE_OWNER'),
+            '{bankwire_details}' => nl2br(Configuration::get('BANK_WIRE_DETAILS')),
+            '{bankwire_address}' => nl2br(Configuration::get('BANK_WIRE_ADDRESS')),
+        ];
+        return parent::validateOrder($idCart, $idOrderState, $amountPaid, $paymentMethod, $message, $mailVars, $currencySpecial, $dontTouchAmount, $secureKey, $shop)
+    }
 
     /**
      * Post validation
