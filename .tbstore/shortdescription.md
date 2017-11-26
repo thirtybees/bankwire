@@ -1,1 +1,0 @@
-Accept bank wires easily with your thirty bees shop using our bank wire module.

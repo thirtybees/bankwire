@@ -1,0 +1,14 @@
+module_name: Bankwire Module
+compatible_versions: 1.0.0+
+author: thirty bees
+category: payment
+tags:
+  - bankwire
+  - bank payment
+  - payment module
+short_description: Accept bank wires easily with your thirty bees shop using our bank wire module.
+description: description.md
+images:
+  - image-1.png
+  - image-2.png
+license: MIT
