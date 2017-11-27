@@ -311,7 +311,7 @@ class BankWire extends PaymentModule
             '{bankwire_details}' => nl2br(Configuration::get('BANK_WIRE_DETAILS')),
             '{bankwire_address}' => nl2br(Configuration::get('BANK_WIRE_ADDRESS')),
         ];
-        return parent::validateOrder($idCart, $idOrderState, $amountPaid, $paymentMethod, $message, $mailVars, $currencySpecial, $dontTouchAmount, $secureKey, $shop)
+        return parent::validateOrder($idCart, $idOrderState, $amountPaid, $paymentMethod, $message, $mailVars, $currencySpecial, $dontTouchAmount, $secureKey, $shop);
     }
 
     /**
