@@ -75,7 +75,8 @@ class BankWire extends PaymentModule
         if (!isset($this->owner) || !isset($this->details) || !isset($this->address)) {
             $this->warning = $this->l('Account owner and account details must be configured before using this module.');
         }
-        if (!count(Currency::checkPaymentCurrencies($this->id))) {
+        $paymentCurrencies = Currency::checkPaymentCurrencies($this->id);
+        if (!is_array($paymentCurrencies) || !count($paymentCurrencies)) {
             $this->warning = $this->l('No currency has been set for this module.');
         }
 
