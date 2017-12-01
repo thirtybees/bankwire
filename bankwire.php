@@ -46,7 +46,7 @@ class BankWire extends PaymentModule
     {
         $this->name = 'bankwire';
         $this->tab = 'payments_gateways';
-        $this->version = '2.0.2';
+        $this->version = '2.0.3';
         $this->author = 'thirty bees';
         $this->controllers = ['payment', 'validation'];
         $this->is_eu_compatible = 1;
@@ -126,7 +126,7 @@ class BankWire extends PaymentModule
     {
         if (Tools::isSubmit('btnSubmit')) {
             $this->postValidation();
-            if (!count($this->postErrors)) {
+            if (!is_array($this->postErrors) || !count($this->postErrors)) {
                 $this->postProcess();
             } else {
                 foreach ($this->postErrors as $err) {
