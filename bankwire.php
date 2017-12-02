@@ -32,21 +32,25 @@ if (!defined('_TB_VERSION_')) {
  */
 class BankWire extends PaymentModule
 {
+    // @codingStandardsIgnoreStart
     public $details;
     public $owner;
     public $address;
-    public $extraMailVars;
+    public $extra_mail_vars;
     protected $moduleHtml = '';
     protected $postErrors = [];
+    // @codingStandarsdIgnoreEnd
 
     /**
      * BankWire constructor.
+     *
+     * @throws PrestaShopException
      */
     public function __construct()
     {
         $this->name = 'bankwire';
         $this->tab = 'payments_gateways';
-        $this->version = '2.0.3';
+        $this->version = '2.0.4';
         $this->author = 'thirty bees';
         $this->controllers = ['payment', 'validation'];
         $this->is_eu_compatible = 1;
@@ -80,7 +84,7 @@ class BankWire extends PaymentModule
             $this->warning = $this->l('No currency has been set for this module.');
         }
 
-        $this->extraMailVars = [
+        $this->extra_mail_vars = [
             '{bankwire_owner}'   => Configuration::get('BANK_WIRE_OWNER'),
             '{bankwire_details}' => nl2br(Configuration::get('BANK_WIRE_DETAILS')),
             '{bankwire_address}' => nl2br(Configuration::get('BANK_WIRE_ADDRESS')),
@@ -89,6 +93,7 @@ class BankWire extends PaymentModule
 
     /**
      * @return bool
+     * @throws PrestaShopException
      */
     public function install()
     {
