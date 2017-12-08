@@ -6,7 +6,7 @@ tags:
   - bankwire
   - bank payment
   - payment module
-short_description: Accept bank wires easily with your thirty bees shop using our bank wire module.
+description_short: Accept bank wires easily with your thirty bees shop using our bank wire module.
 description: description.md
 images:
   - image-1.png
