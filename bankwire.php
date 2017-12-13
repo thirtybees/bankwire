@@ -280,8 +280,8 @@ class BankWire extends PaymentModule
             $this->smarty->assign(
                 [
                     'total_to_pay'    => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
-                    'bankwireDetails' => Tools::nl2br($this->details),
-                    'bankwireAddress' => Tools::nl2br($this->address),
+                    'bankwireDetails' => nl2br($this->details),
+                    'bankwireAddress' => nl2br($this->address),
                     'bankwireOwner'   => $this->owner,
                     'status'          => 'ok',
                     'id_order'        => $params['objOrder']->id,
