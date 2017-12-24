@@ -56,7 +56,7 @@ class BankWire extends PaymentModule
     {
         $this->name = 'bankwire';
         $this->tab = 'payments_gateways';
-        $this->version = '2.0.5';
+        $this->version = '2.0.6';
         $this->author = 'thirty bees';
         $this->controllers = ['payment', 'validation'];
         $this->is_eu_compatible = 1;
