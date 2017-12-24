@@ -46,25 +46,36 @@ class BankwirePaymentModuleFrontController extends ModuleFrontController
      */
     public function initContent()
     {
-        parent::initContent();
+        try {
+            parent::initContent();
+        } catch (PrestaShopException $e) {
+        }
 
         $cart = $this->context->cart;
-        if (!count(Currency::checkPaymentCurrencies($this->module->id))) {
+        try {
+            if (!count(Currency::checkPaymentCurrencies($this->module->id))) {
+                Tools::redirect('index.php?controller=order');
+            }
+        } catch (PrestaShopException $e) {
             Tools::redirect('index.php?controller=order');
         }
 
-        $this->context->smarty->assign(
-            [
-                'nbProducts'    => $cart->nbProducts(),
-                'cust_currency' => $cart->id_currency,
-                'currencies'    => $this->module->getCurrency((int) $cart->id_currency),
-                'total'         => $cart->getOrderTotal(true, Cart::BOTH),
-                'this_path'     => $this->module->getPathUri(),
-                'this_path_bw'  => $this->module->getPathUri(),
-                'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/',
-            ]
-        );
+        try {
+            $this->context->smarty->assign(
+                [
+                    'nbProducts'    => $cart->nbProducts(),
+                    'cust_currency' => $cart->id_currency,
+                    'currencies'    => Currency::getCurrenciesByIdShop((int) $cart->id_shop),
+                    'total'         => $cart->getOrderTotal(true, Cart::BOTH),
+                    'this_path'     => $this->module->getPathUri(),
+                    'this_path_bw'  => $this->module->getPathUri(),
+                    'this_path_ssl' => Tools::getShopDomainSsl(true, true).__PS_BASE_URI__.'modules/'.$this->module->name.'/',
+                ]
+            );
 
-        $this->setTemplate('payment_execution.tpl');
+            $this->setTemplate('payment_execution.tpl');
+        } catch (Exception $e) {
+            Logger::addLog("Bankwire module error: {$e->getMessage()}");
+        }
     }
 }
