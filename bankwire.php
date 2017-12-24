@@ -3,7 +3,7 @@
  * 2007-2016 PrestaShop
  *
  * Thirty Bees is an extension to the PrestaShop e-commerce software developed by PrestaShop SA
- * Copyright (C) 2017 Thirty Bees
+ * Copyright (C) 2017-2018 thirty bees
  *
  * NOTICE OF LICENSE
  *
@@ -17,7 +17,7 @@
  *
  * @author    Thirty Bees <modules@thirtybees.com>
  * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2017 Thirty Bees
+ * @copyright 2017-2018 thirty bees
  * @copyright 2007-2016 PrestaShop SA
  * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  *  PrestaShop is an internationally registered trademark & property of PrestaShop SA
@@ -33,11 +33,17 @@ if (!defined('_TB_VERSION_')) {
 class BankWire extends PaymentModule
 {
     // @codingStandardsIgnoreStart
+    /** @var string $details */
     public $details;
+    /** @var string $owner */
     public $owner;
+    /** @var string $address */
     public $address;
+    /** @var array $extra_mail_vars */
     public $extra_mail_vars;
+    /** @var string $moduleHtml */
     protected $moduleHtml = '';
+    /** @var array $postErrors */
     protected $postErrors = [];
     // @codingStandarsdIgnoreEnd
 
@@ -110,6 +116,8 @@ class BankWire extends PaymentModule
 
     /**
      * @return bool
+     * @throws PrestaShopDatabaseException
+     * @throws PrestaShopException
      */
     public function uninstall()
     {
@@ -126,6 +134,10 @@ class BankWire extends PaymentModule
 
     /**
      * @return string
+     * @throws Exception
+     * @throws PrestaShopDatabaseException
+     * @throws PrestaShopException
+     * @throws SmartyException
      */
     public function getContent()
     {
@@ -150,6 +162,9 @@ class BankWire extends PaymentModule
 
     /**
      * @return string
+     * @throws Exception
+     * @throws PrestaShopException
+     * @throws SmartyException
      */
     public function displayBankwire()
     {
@@ -158,6 +173,10 @@ class BankWire extends PaymentModule
 
     /**
      * @return string
+     * @throws Exception
+     * @throws PrestaShopDatabaseException
+     * @throws PrestaShopException
+     * @throws SmartyException
      */
     public function renderForm()
     {
@@ -218,6 +237,7 @@ class BankWire extends PaymentModule
      * Get the configuration field values
      *
      * @return array
+     * @throws PrestaShopException
      */
     public function getConfigFieldsValues()
     {
@@ -230,6 +250,9 @@ class BankWire extends PaymentModule
 
     /**
      * @return string
+     * @throws Exception
+     * @throws PrestaShopException
+     * @throws SmartyException
      */
     public function hookPayment()
     {
@@ -250,6 +273,7 @@ class BankWire extends PaymentModule
 
     /**
      * @return array|string
+     * @throws PrestaShopException
      */
     public function hookDisplayPaymentEU()
     {
@@ -268,6 +292,9 @@ class BankWire extends PaymentModule
      * @param array $params
      *
      * @return string
+     * @throws Exception
+     * @throws PrestaShopException
+     * @throws SmartyException
      */
     public function hookPaymentReturn($params)
     {
@@ -275,23 +302,29 @@ class BankWire extends PaymentModule
             return '';
         }
 
-        $state = $params['objOrder']->getCurrentState();
-        if (in_array($state, [Configuration::get('PS_OS_BANKWIRE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')])) {
-            $this->smarty->assign(
-                [
-                    'total_to_pay'    => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
-                    'bankwireDetails' => nl2br($this->details),
-                    'bankwireAddress' => nl2br($this->address),
-                    'bankwireOwner'   => $this->owner,
-                    'status'          => 'ok',
-                    'id_order'        => $params['objOrder']->id,
-                ]
-            );
-            if (isset($params['objOrder']->reference) && !empty($params['objOrder']->reference)) {
-                $this->smarty->assign('reference', $params['objOrder']->reference);
+        try {
+            $state = $params['objOrder']->getCurrentState();
+            if (in_array($state, [Configuration::get('PS_OS_BANKWIRE'), Configuration::get('PS_OS_OUTOFSTOCK'), Configuration::get('PS_OS_OUTOFSTOCK_UNPAID')])) {
+                $this->smarty->assign(
+                    [
+                        'total_to_pay'    => Tools::displayPrice($params['total_to_pay'], $params['currencyObj'], false),
+                        'bankwireDetails' => nl2br($this->details),
+                        'bankwireAddress' => nl2br($this->address),
+                        'bankwireOwner'   => $this->owner,
+                        'status'          => 'ok',
+                        'id_order'        => $params['objOrder']->id,
+                    ]
+                );
+                if (isset($params['objOrder']->reference) && !empty($params['objOrder']->reference)) {
+                    $this->smarty->assign('reference', $params['objOrder']->reference);
+                }
+            } else {
+                $this->smarty->assign('status', 'failed');
             }
-        } else {
-            $this->smarty->assign('status', 'failed');
+        } catch (PrestaShopException $e) {
+            Logger::addLog("Bankwire module error: {$e->getMessage()}");
+
+            return '';
         }
 
         return $this->display(__FILE__, 'payment_return.tpl');
@@ -299,6 +332,8 @@ class BankWire extends PaymentModule
 
     /**
      * Post process
+     *
+     * @throws PrestaShopException
      */
     protected function postProcess()
     {
