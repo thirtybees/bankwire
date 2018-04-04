@@ -65,7 +65,7 @@ class BankwirePaymentModuleFrontController extends ModuleFrontController
                 [
                     'nbProducts'    => $cart->nbProducts(),
                     'cust_currency' => $cart->id_currency,
-                    'currencies'    => Currency::getCurrenciesByIdShop((int) $cart->id_shop),
+                    'currencies'    => Currency::getPaymentCurrencies($this->module->id, (int) $cart->id_shop),
                     'total'         => $cart->getOrderTotal(true, Cart::BOTH),
                     'this_path'     => $this->module->getPathUri(),
                     'this_path_bw'  => $this->module->getPathUri(),
