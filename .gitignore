@@ -1,1 +1,7 @@
-*bankwire*.zip
+
+/translations/*
+!/translations/index.php
+
+/config*.xml
+
+bankwire-*.zip
