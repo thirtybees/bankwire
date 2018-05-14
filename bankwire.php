@@ -78,7 +78,7 @@ class BankWire extends PaymentModule
         $this->bootstrap = true;
         parent::__construct();
 
-        $this->displayName = $this->l('Bank wire');
+        $this->displayName = $this->l('Bankwire Module');
         $this->description = $this->l('Accept payments for your products via bank wire transfer.');
         $this->confirmUninstall = $this->l('Are you sure about removing these details?');
 
