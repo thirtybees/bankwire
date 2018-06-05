@@ -58,6 +58,7 @@ class BankWire extends PaymentModule
         $this->tab = 'payments_gateways';
         $this->version = '2.0.6';
         $this->author = 'thirty bees';
+        $this->need_instance = 1;
         $this->controllers = ['payment', 'validation'];
         $this->is_eu_compatible = 1;
 
@@ -80,6 +81,7 @@ class BankWire extends PaymentModule
 
         $this->displayName = $this->l('Bankwire Module');
         $this->description = $this->l('Accept payments for your products via bank wire transfer.');
+        $this->tb_versions_compliancy = '> 1.0.0';
         $this->confirmUninstall = $this->l('Are you sure about removing these details?');
 
         if (!isset($this->owner) || !isset($this->details) || !isset($this->address)) {
