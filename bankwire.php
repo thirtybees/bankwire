@@ -340,9 +340,9 @@ class BankWire extends PaymentModule
     protected function postProcess()
     {
         if (Tools::isSubmit('btnSubmit')) {
-            Configuration::updateValue('BANK_WIRE_DETAILS', Tools::getValue('BANK_WIRE_DETAILS'));
+            Configuration::updateValue('BANK_WIRE_DETAILS', Tools::getValue('BANK_WIRE_DETAILS'), true);
             Configuration::updateValue('BANK_WIRE_OWNER', Tools::getValue('BANK_WIRE_OWNER'));
-            Configuration::updateValue('BANK_WIRE_ADDRESS', Tools::getValue('BANK_WIRE_ADDRESS'));
+            Configuration::updateValue('BANK_WIRE_ADDRESS', Tools::getValue('BANK_WIRE_ADDRESS'), true);
         }
         $this->moduleHtml .= $this->displayConfirmation($this->l('Settings updated'));
     }
