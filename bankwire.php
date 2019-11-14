@@ -244,9 +244,9 @@ class BankWire extends PaymentModule
     public function getConfigFieldsValues()
     {
         return [
-            'BANK_WIRE_DETAILS' => Tools::getValue('BANK_WIRE_DETAILS', Configuration::get('BANK_WIRE_DETAILS')),
-            'BANK_WIRE_OWNER'   => Tools::getValue('BANK_WIRE_OWNER', Configuration::get('BANK_WIRE_OWNER')),
-            'BANK_WIRE_ADDRESS' => Tools::getValue('BANK_WIRE_ADDRESS', Configuration::get('BANK_WIRE_ADDRESS')),
+            'BANK_WIRE_DETAILS' => Configuration::get('BANK_WIRE_DETAILS'),
+            'BANK_WIRE_OWNER'   => Configuration::get('BANK_WIRE_OWNER'),
+            'BANK_WIRE_ADDRESS' => Configuration::get('BANK_WIRE_ADDRESS'),
         ];
     }
 
