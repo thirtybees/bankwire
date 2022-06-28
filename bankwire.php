@@ -93,10 +93,13 @@ class BankWire extends PaymentModule
             $this->warning = $this->l('No currency has been set for this module.');
         }
 
+        $details = Configuration::get('BANK_WIRE_DETAILS');
+        $address = Configuration::get('BANK_WIRE_ADDRESS');
+
         $this->extra_mail_vars = [
             '{bankwire_owner}'   => Configuration::get('BANK_WIRE_OWNER'),
-            '{bankwire_details}' => nl2br(Configuration::get('BANK_WIRE_DETAILS')),
-            '{bankwire_address}' => nl2br(Configuration::get('BANK_WIRE_ADDRESS')),
+            '{bankwire_details}' => $details ? nl2br($details) : '',
+            '{bankwire_address}' => $address ? nl2br($address) : '',
         ];
     }
 
